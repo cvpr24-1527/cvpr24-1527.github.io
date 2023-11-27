@@ -1,1 +1,287 @@
-testing website
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>CVPR24 Submission 1527</title>
+
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/style_slider.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/slider.js"></script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h1 class="col-md-12 text-center">
+                Recovering Hands and Objects from Internet Videos <br>
+                <small>
+                  Anonymous CVPR24 Submission <br> Paper ID 1527
+                </small>
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <p class="text-justify">
+                    We study the problem of recovering hands and objects from Internet videos. This requires understanding the hand-object interactions in 4D, spatially in 3D and over time, which is challenging due to mutual hand-object occlusions. In this paper we present a novel reconstruction technique RHOV (Recovering Hands and Objects from Videos), which reconstructs 4D trajectories of both the hands and the objects. We leverage large pre-trained models for identifying and segmenting the objects that the hands are interacting with and formulate an optimization problem to recover the 4D hand-object trajectories per video, consistent in 3D and over time. We apply our reconstruction technique to over 100 challenging Internet videos and evaluate it on in-the-lab datasets as well. Finally, we show that our recovered trajectories can be used in downstream applications by imitating the recovered object interactions on a robot arm in a physics simulator with reinforcement learning.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                   Reconstructions from Internet Videos
+                </h3>
+                <p class="text-justify">
+                    To reconstruct hands and objects from Internet videos, we introduce an optimization-based technique, called RHOV (for Reconstructing Hands and Objects from Videos), leveraging 2D spatial cues (keypoints, masks, depth) and temporal smoothness constraints (4D, optical flow). We show example RHOV reconstructions on Internet videos below:
+                </p>
+                <br>
+                <center>
+                    <video id="v2" width="80%" autoplay loop muted>
+                        <source src="media/vid/in_the_wild.webm" type="video/webm" />
+                    </video>
+                <p class="text-center caption" style="width: 80%">Hand-object trajectories produced by RHOV overlaid on internet videos (top) seen from six different viewpoints (bottom).</p>
+                </center>
+                <br>
+                <video width="100%" autoplay loop muted>
+                    <source src="media/dataset/grid.webm" type="video/webm" />
+                </video>
+                <p class="text-center caption">RHOV reconstructions for 110 Internet videos from the <a href="https://fouheylab.eecs.umich.edu/~dandans/projects/100DOH/">100 Days of Hands</a> dataset.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Ablation Studies
+                </h3>
+                <p>RHOV jointly reconstructs the hand and object across all frames of the video at once. We conduct a series of ablation studies to further understand the importance of joint reconstruction. In particular, we find that a) reconstructing hands and objects independently produces a reconstruction where the hand is far from the object and b) reconstructing hands and objects for each video frame separately leads to flipping in the object model due to symmetrical ambiguities. </p>
+                <table style="table-layout: fixed ; width: 100%">
+                    <tr>
+                        <td>
+                            <center>
+                                <video width="95%" autoplay loop muted>
+                                    <source src="media/ablation/normal.webm" type="video/webm" />
+                                </video>
+                                <h5>RHOV (default settings)</h5>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video width="95%" autoplay loop muted>
+                                    <source src="media/ablation/independent.webm" type="video/webm" />
+                                </video>
+                                <h5>a) Independent hand and object</h5>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video width="95%" autoplay loop muted>
+                                    <source src="media/ablation/per_frame.webm" type="video/webm" />
+                                </video>
+                                <h5>b) Independent video frames</h5>
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                <h3>
+                    RHOV and HOman Object Reconstruction
+                </h3>
+                <p class="text-justify">
+                    Here we compare RHOV to the HOman hand-object reconstruction method presented in the paper "Towards unconstrained joint hand-object reconstruction from RGB videos" (citation [17] in paper). The following results show qualitative comparisons between RHOV and HOman for 3D object pose reconstruction on seven different internet videos from the Manipulating Objects in the Wild dataset (MOW) [5]. On the left are results from RHOV and on the right are results from HOman.
+                </p>
+
+<!--https://www.w3schools.com/howto/howto_js_slideshow.asp-->
+                <!-- Slideshow container -->
+                <div class="slideshow-container">
+
+                    <!-- Full-width images with number and caption text -->
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/drink_v_EoJ24T7_sX0_frame000153.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/drink_v_g1tlRJb9Mv8_frame000090.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/drink_v_YE8RwKpt580_frame000325.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/diy_v_H-0U6lcvLM4_frame000247.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/food_v_0BDK_-RKKiw_frame000188.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/food_v_uiV0_xGJtig_frame000107.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext"></div>
+                        <img src="media/rhov_and_homan_vision/packing_v_duAqP5MM1Qk_frame000101.gif" class="vision_comparison">
+                        <div class="text"></div>
+                    </div>
+
+                    <!-- Next and previous buttons -->
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <br>
+
+                <!-- The dots/circles -->
+                <div style="text-align:center">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                    <span class="dot" onclick="currentSlide(5)"></span>
+                    <span class="dot" onclick="currentSlide(6)"></span>
+                    <span class="dot" onclick="currentSlide(7)"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Failure Cases
+                </h3>
+                <p>RHOV relies on 2D image cues to inform 3D hand-object reconstruction and thus is limited by poor 2D segmentation masks and mutual hand-object occlusion. We present a series of failure cases below.</p><br>
+                <table style="table-layout: fixed ; width: 100%">
+                    <tr>
+                        <td>
+                            <center>
+                                <video id="v6" width="100%" autoplay loop muted>
+                                    <source src="media/failure/changing_object_shape.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video id="v10" width="100%" autoplay loop muted>
+                                    <source src="media/failure/changing_object_shape_2.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="center-text caption">Changing object model</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <center>
+                                <video id="v1" width="100%" autoplay loop muted>
+                                    <source src="media/failure/bad_hand.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video id="v9" width="100%" autoplay loop muted>
+                                    <source src="media/failure/severe_hand_occlusion.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="center-text caption">Severe Hand Occlusion</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <center>
+                                <video id="v7" width="100%" autoplay loop muted>
+                                    <source src="media/failure/bad_detectron_link_frame_preds.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video id="v8" width="100%" autoplay loop muted>
+                                    <source src="media/failure/bad_detectron_temporal_optim.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="center-text caption">Incorrect 2D segmentation masks</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+    </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Imitating Object Interactions
+                </h3>
+                <p class="text-justify">To show an application of the RHOV reconstructions in downstream tasks, we present an approach for imitating the object interactions from the video reconstructions. We first reconstruct hand-object trajectories in 4D, 3D plus time. We then train a policy to imitate the reconstructed object trajectory with reinforcement learning on a robot arm in a physics simulator.</p>
+                <br>
+                <center>
+                    <video id="14" width="100%" autoplay loop muted>
+                        <source src="media/vid/rl_training.mp4" type="video/mp4" />
+                    </video>
+                </center>
+                <p class="text-center caption">Left: Internet video to imitate. Right: Reinforcement learning training process.</p>
+
+                <center>
+                    <video id="v0" width="100%" autoplay loop muted>
+                        <source src="media/vid/banner_video.mp4" type="video/mp4" />
+                    </video>
+                </center>
+                <p class="text-center caption">Every robot video (right panel) starts with the robot picking up the object from the table and ends in a segment where the robot imitates the human motion (left panel).</p>
+
+                <br>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
